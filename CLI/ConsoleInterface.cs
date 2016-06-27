@@ -4,15 +4,17 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using CLICommand = System.Action<System.Collections.Generic.IEnumerable<string>>;
+
     public class ConsoleInterface
     {
-        static Dictionary<string, Action<IEnumerable<string>>> commands = new Dictionary<string, Action<IEnumerable<string>>>()
+        static Dictionary<string, CLICommand> commands = new Dictionary<string, Action<IEnumerable<string>>>()
         {
             { "clear", RegisterSimpleCommand(Console.Clear) },
             { "messenger", RegisterCommand(typeof(Messenger), "Init") },
         };
 
-        public static int State = 0;
+        public static int State;
 
         public static void Init()
         {
@@ -40,7 +42,7 @@
                     }
                     catch (Exception e)
                     {
-                        Console.WriteLine($"Falied <{command}>: {e.Message}");
+                        Console.WriteLine($"Failed <{command}>: {e.Message}");
                     }
                 }
                 else
@@ -50,7 +52,7 @@
             }
         }
 
-        static Action<IEnumerable<string>> RegisterSimpleCommand(Action a)
+        static CLICommand RegisterSimpleCommand(Action a)
         {
             return args =>
                 {
@@ -59,7 +61,7 @@
                 };
         }
 
-        static Action<IEnumerable<string>> RegisterCommand(Type type, string method)
+        static CLICommand RegisterCommand(Type type, string method)
         {
             return args =>
                 {
@@ -70,8 +72,6 @@
 
         static IEnumerable<string> SplitIntoTokens(string s)
         {
-            // тут надо бы что-то похитрее, как минимум учитывать группировку
-            // кавычками и escape-символы
             return s.Split(null as char[], StringSplitOptions.RemoveEmptyEntries);
         }
     }

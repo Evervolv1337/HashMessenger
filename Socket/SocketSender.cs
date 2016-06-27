@@ -60,7 +60,6 @@
             if (message.IndexOf("<TheEnd>") == -1)
             {
                 Init();
-                //SendMessage(message);
             }
         }
 
