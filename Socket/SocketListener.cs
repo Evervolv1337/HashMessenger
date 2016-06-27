@@ -81,7 +81,6 @@
 
         public void Dispose()
         {
-            Listener.Shutdown(SocketShutdown.Both);
             Listener.Close();
 
             Console.WriteLine("[SocketListener] Disposed.");
