@@ -11,12 +11,12 @@
         private static SocketListener Listener { get; set; }
         private static SocketSender Sender { get; set; }
 
-        public const string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public static readonly string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         [MTAThread]
         static void Main(string[] args)
         {
-            Console.WriteLine(  $"HashMessenger {version}\n"
+            Console.WriteLine(  $"HashMessenger {Version}\n"
                               + $"Created by Evervolv1337 - github.com/Evervolv1337\n"
                               + $"-------------------------------------------------");
 
