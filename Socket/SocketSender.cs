@@ -17,11 +17,20 @@
             this._ip = ip;
             this._port = Int32.Parse(port);
 
-            Init();
+            try
+            {
+                Init();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[SocketSender] " + e.Message);
+            }
         }
 
         private void Init()
         {
+            Console.WriteLine("[SocketSender] Binding to " + this._ip + ":" + this._port);
+
             // Буфер для входящих данных
             byte[] bytes = new byte[1024];
 
@@ -33,14 +42,7 @@
             Sender = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             // Соединяем сокет с удаленной точкой
-            try
-            {
-                Sender.Connect(ipEndPoint);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("[SocketSender] " + e);
-            }
+            Sender.Connect(ipEndPoint);
         }
 
         public void SendMessage(string message)
@@ -48,7 +50,7 @@
             if (Sender.RemoteEndPoint == null)
                 return;
 
-            Console.WriteLine("[SocketSender] Connecting to "+this._ip+":"+this._port);
+            Console.WriteLine("[SocketSender] Sending to "+this._ip+":"+this._port);
             byte[] msg = Encoding.UTF8.GetBytes(message);
 
             // Отправляем данные через сокет
@@ -64,8 +66,15 @@
 
         public void Dispose()
         {
-            Sender.Shutdown(SocketShutdown.Both);
-            Sender.Close();
+            try
+            {
+                Sender.Shutdown(SocketShutdown.Both);
+                Sender.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[SocketSender] OnDispose -> " + e.Message);
+            }
 
             Console.WriteLine("[SocketSender] Disposed.");
         }

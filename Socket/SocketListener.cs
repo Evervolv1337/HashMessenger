@@ -75,7 +75,7 @@
             }
             catch (Exception ex)
             {
-                Console.WriteLine("[SocketListener] " + ex);
+                Console.WriteLine("[SocketListener] " + ex.Message);
             }
         }
 
